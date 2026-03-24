@@ -644,7 +644,7 @@ body {
 </div>
 
 <!-- ═══════════════════════ 설정 화면 ═══════════════════════ -->
-<div id="screen-setup" class="active">
+<div id="screen-setup" style="display:none!important;">
   <div class="setup-emoji">🔑</div>
   <div class="setup-h1">처음 한 번만<br>설정하면 됩니다</div>
   <div class="setup-desc">API 키를 저장하면<br>다음부터 앱을 열면 자동으로<br>오늘의 판례가 표시됩니다</div>
@@ -728,11 +728,9 @@ body {
 ══════════════════════════════════════ */
 const now = new Date();
 const todayKey = now.toISOString().slice(0, 10);
-let API_KEY = '';
+const API_KEY = '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';
 let currentCase = null;
 let fontSizeState = 'large'; // 기본: 크게
-
-try { API_KEY = localStorage.getItem('mg_api_key') || ''; } catch(e) {}
 
 /* ── 날짜 헤더 ── */
 document.getElementById('headerDate').textContent =
@@ -809,8 +807,7 @@ function startWithKey() {
     errEl.style.display = 'block'; return;
   }
   errEl.style.display = 'none';
-  API_KEY = key;
-  try { localStorage.setItem('mg_api_key', key); } catch(e) {}
+  // API 키는 파일에 내장됨 (재할당 불필요)
   fetchCase(false);
 }
 
@@ -1235,9 +1232,7 @@ function closeHistDetail() {
    기타 유틸
 ══════════════════════════════════════ */
 function resetKey() {
-  try { localStorage.removeItem('mg_api_key'); } catch(e) {}
-  API_KEY = '';
-  showScreen('setup');
+  showToast('API 키가 파일에 내장되어 있습니다. 관리자에게 문의하세요.');
 }
 
 let toastTimer = null;
@@ -1252,22 +1247,19 @@ function showToast(msg) {
 /* ══════════════════════════════════════
    초기 실행
 ══════════════════════════════════════ */
-if (API_KEY) {
-  // 구버전 깨진 캐시 자동 감지 및 제거
-  try {
-    const old = localStorage.getItem("mg_case_" + todayKey);
-    if (old) {
-      const parsed = JSON.parse(old);
-      if (!isCacheValid(parsed)) {
-        localStorage.removeItem("mg_case_" + todayKey);
-        console.log("[MG] 구버전 캐시 감지 → 삭제 후 새로 불러옴");
-      }
+// 구버전 깨진 캐시 자동 감지 및 제거
+try {
+  const old = localStorage.getItem("mg_case_" + todayKey);
+  if (old) {
+    const parsed = JSON.parse(old);
+    if (!isCacheValid(parsed)) {
+      localStorage.removeItem("mg_case_" + todayKey);
     }
-  } catch(e) { localStorage.removeItem("mg_case_" + todayKey); }
-  fetchCase(false);
-} else {
-  showScreen("setup");
-}
+  }
+} catch(e) { localStorage.removeItem("mg_case_" + todayKey); }
+
+// API 키가 파일에 내장되어 있으므로 바로 판례 로드
+fetchCase(false);
 </script>
 </body>
 </html>
