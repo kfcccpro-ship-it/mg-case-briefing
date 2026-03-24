@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>오늘의 판례 | MG 이사장</title>
+<style>
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+
+/* ═══════════════════════════════
+   CSS 변수 (토스 색감 시스템)
+═══════════════════════════════ */
+:root {
+  /* 배경 */
+  --bg-white:    #FFFFFF;
+  --bg-gray-50:  #F9FAFB;
+  --bg-gray-100: #F2F4F6;
+
+  /* 텍스트 */
+  --text-primary:   #191F28;
+  --text-secondary: #4E5968;
+  --text-tertiary:  #8B95A1;
+
+  /* 경계 */
+  --border: #E5E8EB;
+
+  /* 토스 블루 */
+  --blue:       #3182F6;
+  --blue-dark:  #1B64DA;
+  --blue-light: #EBF3FE;
+  --blue-mid:   #D6E9FD;
+
+  /* 강조 */
+  --green:       #05C072;
+  --green-light: #E6FBF1;
+  --amber:       #F59E0B;
+  --amber-light: #FFFBEB;
+  --red:         #F04452;
+  --red-light:   #FFF0F1;
+
+  /* 카드 */
+  --radius: 16px;
+  --radius-sm: 10px;
+  --shadow: 0 1px 2px rgba(0,0,0,0.04), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+
+  /* 글자 크기 (JS로 변경) */
+  --fs-xs:   13px;
+  --fs-sm:   15px;
+  --fs-base: 17px;
+  --fs-md:   19px;
+  --fs-lg:   22px;
+  --fs-xl:   26px;
+  --fs-2xl:  30px;
+}
+
+/* ═══════════════════════════════
+   리셋 & 기본
+═══════════════════════════════ */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0; padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Pretendard', -apple-system, BlinkMacSystemFont,
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  background: var(--bg-gray-50);
+  color: var(--text-primary);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ═══════════════════════════════
+   헤더
+═══════════════════════════════ */
+.header {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+}
+.header-left {
+  display: flex; align-items: center; gap: 10px;
+  flex: 1;
+}
+.header-icon {
+  width: 38px; height: 38px;
+  background: var(--blue);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.header-title {
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+.header-credit {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 2px;
+  font-weight: 400;
+}
+.header-sub   { font-size: 12px; color: var(--text-tertiary); }
+
+/* 글자 크기 조절 */
+.font-ctrl {
+  display: flex; align-items: center; gap: 4px;
+  background: var(--bg-gray-100);
+  border-radius: 8px;
+  padding: 4px 6px;
+}
+.font-ctrl-btn {
+  border: none; background: transparent;
+  cursor: pointer;
+  color: var(--text-secondary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-weight: 700;
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.font-ctrl-btn.small  { font-size: 12px; }
+.font-ctrl-btn.large  { font-size: 17px; }
+.font-ctrl-btn.active {
+  background: var(--bg-white);
+  color: var(--blue);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.font-divider { width: 1px; height: 16px; background: var(--border); }
+
+/* ═══════════════════════════════
+   하단 탭바
+═══════════════════════════════ */
+.tab-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg-white);
+  border-top: 1px solid var(--border);
+  display: flex;
+  z-index: 200;
+  height: 60px;
+  max-width: 480px;
+  margin: 0 auto;
+  left: 50%; transform: translateX(-50%);
+  width: 100%;
+}
+.tab-item {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 3px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  transition: color 0.15s;
+  color: var(--text-tertiary);
+}
+.tab-item.active { color: var(--blue); }
+.tab-item-icon { font-size: 22px; line-height: 1; }
+.tab-item-label { font-size: 11px; font-weight: 600; }
+
+/* ═══════════════════════════════
+   콘텐츠 영역 공통
+═══════════════════════════════ */
+.screen {
+  display: none;
+  min-height: calc(100vh - 120px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 16px 16px 80px;
+}
+.screen.active { display: block; }
+
+/* ═══════════════════════════════
+   설정 화면
+═══════════════════════════════ */
+#screen-setup {
+  display: none;
+  min-height: calc(100vh - 60px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 32px 20px 80px;
+}
+#screen-setup.active { display: block; }
+.setup-emoji { font-size: 52px; text-align: center; margin-bottom: 20px; }
+.setup-h1 { font-size: var(--fs-xl); font-weight: 700; text-align: center; line-height: 1.4; margin-bottom: 10px; }
+.setup-desc { font-size: var(--fs-sm); color: var(--text-secondary); text-align: center; line-height: 1.8; margin-bottom: 28px; }
+.setup-card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.setup-card h3 { font-size: var(--fs-base); font-weight: 700; margin-bottom: 14px; }
+.step-row { display: flex; gap: 12px; margin-bottom: 14px; }
+.step-row:last-child { margin-bottom: 0; }
+.step-dot {
+  min-width: 26px; height: 26px;
+  background: var(--blue);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  color: white; font-size: 13px; font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.step-text { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.7; }
+.step-text a { color: var(--blue); font-weight: 600; text-decoration: none; }
+.key-input {
+  width: 100%;
+  padding: 16px;
+  border: 2px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 15px;
+  font-family: monospace;
+  background: var(--bg-white);
+  color: var(--text-primary);
+  margin-bottom: 10px;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.key-input:focus { outline: none; border-color: var(--blue); }
+.key-input::placeholder { color: var(--text-tertiary); font-family: inherit; }
+.key-err { font-size: 14px; color: var(--red); margin-bottom: 10px; display: none; }
+.btn-primary {
+  width: 100%;
+  padding: 18px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--blue-dark); }
+.btn-primary:active { background: var(--blue-dark); }
+
+/* ═══════════════════════════════
+   로딩 화면
+═══════════════════════════════ */
+#screen-loading {
+  display: none;
+  min-height: calc(100vh - 60px);
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 20px 80px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#screen-loading.active { display: flex; }
+.load-ring-wrap {
+  position: relative;
+  width: 80px; height: 80px;
+  margin-bottom: 28px;
+}
+.load-ring {
+  position: absolute; inset: 0;
+  border: 5px solid var(--bg-gray-100);
+  border-top-color: var(--blue);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.load-center {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px;
+}
+.load-title { font-size: var(--fs-lg); font-weight: 700; margin-bottom: 10px; }
+.load-sub   { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.8; }
+.load-steps { margin-top: 32px; width: 100%; max-width: 320px; }
+.lstep {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  color: var(--text-tertiary);
+  transition: color 0.4s;
+}
+.lstep:last-child { border-bottom: none; }
+.lstep.on  { color: var(--blue); font-weight: 600; }
+.lstep.ok  { color: var(--text-tertiary); }
+.ls-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.4s; }
+.lstep.on .ls-dot { background: var(--blue); }
+.lstep.ok .ls-dot { background: var(--green); }
+
+/* ═══════════════════════════════
+   오늘 판례 화면
+═══════════════════════════════ */
+
+/* 캐시 뱃지 */
+.cache-bar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  background: var(--blue-light);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--blue);
+  margin-bottom: 14px;
+}
+
+/* 날짜 뱃지 */
+.date-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--blue-light);
+  color: var(--blue);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* ① 쉽게 말하면 — 첫 번째 (HOOK) */
+.hook-card {
+  background: var(--blue);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 12px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+.hook-card::after {
+  content: '💬';
+  position: absolute;
+  right: 18px; bottom: -4px;
+  font-size: 60px;
+  opacity: 0.15;
+}
+.hook-kw { font-size: var(--fs-xs); opacity: 0.8; margin-bottom: 6px; letter-spacing: 1px; font-weight: 600; }
+.hook-label { font-size: var(--fs-md); font-weight: 700; margin-bottom: 12px; }
+.hook-body { font-size: var(--fs-md); line-height: 1.9; font-weight: 400; opacity: 0.95; }
+
+/* ② 판례 타이틀 카드 */
+.title-card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.title-card-row { display: flex; align-items: flex-start; gap: 12px; }
+.title-label {
+  font-size: var(--fs-xs);
+  color: var(--text-tertiary);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.case-name {
+  font-size: var(--fs-md);
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin-bottom: 14px;
+}
+.meta-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 5px 12px;
+  background: var(--bg-gray-100);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.chip.blue { background: var(--blue-light); color: var(--blue); }
+
+/* ③ 사건 개요 - 개조식 */
+.card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
+}
+.card-head {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px;
+}
+.card-icon {
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0;
+}
+.card-icon.blue   { background: var(--blue-light); }
+.card-icon.green  { background: var(--green-light); }
+.card-icon.amber  { background: var(--amber-light); }
+.card-icon.gray   { background: var(--bg-gray-100); }
+.card-title { font-size: var(--fs-base); font-weight: 700; color: var(--text-primary); }
+
+/* 개조식 리스트 */
+.bullet-list { display: flex; flex-direction: column; gap: 10px; }
+.bullet-row  { display: flex; gap: 10px; align-items: flex-start; }
+.bullet-arrow {
+  width: 22px; height: 22px;
+  background: var(--blue-light);
+  color: var(--blue);
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800;
+  flex-shrink: 0; margin-top: 2px;
+}
+.bullet-text { font-size: var(--fs-base); line-height: 1.7; color: var(--text-primary); flex: 1; }
+
+/* ④ 판결 결과 */
+.verdict-block {
+  background: var(--green-light);
+  border-left: 4px solid var(--green);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  padding: 16px 18px;
+  font-size: var(--fs-base);
+  line-height: 1.9;
+}
+
+/* ⑤ 실무 시사점 */
+.point-list { display: flex; flex-direction: column; gap: 14px; }
+.point-row  { display: flex; gap: 12px; align-items: flex-start; }
+.point-num {
+  min-width: 28px; height: 28px;
+  background: var(--blue);
+  color: white;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700;
+  flex-shrink: 0; margin-top: 2px;
+}
+.point-txt { font-size: var(--fs-base); line-height: 1.8; flex: 1; }
+
+/* ═══════════════════════════════
+   나한테 보내기 버튼
+═══════════════════════════════ */
+.share-section { margin: 4px 0 16px; }
+.btn-share {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 18px;
+  background: #FEE500;
+  color: #191F28;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: filter 0.15s;
+  box-shadow: 0 2px 8px rgba(254,229,0,0.4);
+}
+.btn-share:hover { filter: brightness(0.95); }
+.btn-share-icon { font-size: 22px; }
+.btn-refresh {
+  width: 100%;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 16px;
+  background: var(--bg-white);
+  color: var(--text-secondary);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.15s;
+  margin-top: 10px;
+}
+.btn-refresh:hover { border-color: var(--blue); color: var(--blue); }
+
+/* ═══════════════════════════════
+   지난 판례 화면 (히스토리)
+═══════════════════════════════ */
+.hist-empty {
+  text-align: center;
+  padding: 60px 20px;
+  color: var(--text-tertiary);
+}
+.hist-empty-icon { font-size: 48px; margin-bottom: 14px; }
+.hist-empty-msg  { font-size: var(--fs-base); line-height: 1.8; }
+.hist-count {
+  font-size: var(--fs-sm);
+  color: var(--text-tertiary);
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+.hist-list { display: flex; flex-direction: column; gap: 10px; }
+.hist-item {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 14px;
+  box-shadow: var(--shadow-sm);
+}
+.hist-item:hover { border-color: var(--blue); transform: translateY(-1px); }
+.hist-item-icon {
+  width: 44px; height: 44px;
+  background: var(--blue-light);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.hist-item-info { flex: 1; min-width: 0; }
+.hist-item-date { font-size: 13px; color: var(--text-tertiary); margin-bottom: 4px; }
+.hist-item-title {
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hist-item-cat {
+  font-size: 12px;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 600;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.hist-today {
+  font-size: 12px;
+  background: var(--green);
+  color: white;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-weight: 700;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* 상세 보기 (히스토리 → 판례) */
+.back-btn {
+  display: flex; align-items: center; gap: 6px;
+  background: none; border: none;
+  font-family: inherit;
+  font-size: var(--fs-sm);
+  color: var(--blue);
+  cursor: pointer;
+  padding: 4px 0;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════
+   에러
+═══════════════════════════════ */
+.err-card {
+  background: var(--bg-white);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+}
+.err-icon  { font-size: 48px; margin-bottom: 16px; }
+.err-title { font-size: var(--fs-lg); font-weight: 700; margin-bottom: 12px; }
+.err-msg   { font-size: var(--fs-sm); color: var(--text-secondary); line-height: 1.8; margin-bottom: 24px; }
+.btn-retry {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 14px 28px;
+  background: var(--blue);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-base);
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  margin-bottom: 12px;
+}
+.btn-reset-key {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: var(--bg-gray-100);
+  color: var(--text-secondary);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 8px;
+}
+
+/* 토스트 알림 */
+.toast {
+  position: fixed;
+  bottom: 80px;
+  left: 50%; transform: translateX(-50%);
+  background: var(--text-primary);
+  color: white;
+  padding: 12px 22px;
+  border-radius: 24px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  z-index: 999;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.toast.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════ 헤더 ═══════════════════════ -->
+<div class="header" id="mainHeader">
+  <div class="header-left">
+    <div class="header-icon">⚖️</div>
+    <div>
+      <div class="header-title">새마을금고 이사장님을<br>위한 판례 브리핑</div>
+      <div class="header-credit">작성자: 김진배 &nbsp;|&nbsp; 목적: 학습용</div>
+    </div>
+  </div>
+  <div class="font-ctrl">
+    <button class="font-ctrl-btn small" onclick="setFontSize('small')">가</button>
+    <div class="font-divider"></div>
+    <button class="font-ctrl-btn large active" onclick="setFontSize('large')">가</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 설정 화면 ═══════════════════════ -->
+<div id="screen-setup" class="active">
+  <div class="setup-emoji">🔑</div>
+  <div class="setup-h1">처음 한 번만<br>설정하면 됩니다</div>
+  <div class="setup-desc">API 키를 저장하면<br>다음부터 앱을 열면 자동으로<br>오늘의 판례가 표시됩니다</div>
+
+  <div class="setup-card">
+    <h3>🗝️ API 키 받는 방법</h3>
+    <div class="step-row">
+      <div class="step-dot">1</div>
+      <div class="step-text"><a href="https://console.anthropic.com" target="_blank">console.anthropic.com</a> 접속 후 로그인</div>
+    </div>
+    <div class="step-row">
+      <div class="step-dot">2</div>
+      <div class="step-text">왼쪽 메뉴 <b>API Keys</b> → <b>Create Key</b> 클릭</div>
+    </div>
+    <div class="step-row" style="margin-bottom:0;">
+      <div class="step-dot">3</div>
+      <div class="step-text">키 복사 후 아래에 붙여넣기 (1회만)</div>
+    </div>
+  </div>
+
+  <div class="key-err" id="keyErr">올바른 형식이 아닙니다. (sk-ant- 로 시작해야 합니다)</div>
+  <input type="password" class="key-input" id="apiKeyInput" placeholder="sk-ant-api03-..." autocomplete="off" />
+  <button class="btn-primary" onclick="startWithKey()">시작하기 →</button>
+</div>
+
+<!-- ═══════════════════════ 로딩 화면 ═══════════════════════ -->
+<div id="screen-loading">
+  <div class="load-ring-wrap">
+    <div class="load-ring"></div>
+    <div class="load-center">⚖️</div>
+  </div>
+  <div class="load-title">오늘의 판례 준비 중</div>
+  <div class="load-sub">AI가 최신 판례를 검색하고<br>이사장님께 맞게 정리하고 있습니다</div>
+  <div class="load-steps">
+    <div class="lstep" id="ls0"><span class="ls-dot"></span>판례 데이터베이스 검색 중</div>
+    <div class="lstep" id="ls1"><span class="ls-dot"></span>금융기관 판례 선별 중</div>
+    <div class="lstep" id="ls2"><span class="ls-dot"></span>이사장용으로 정리 중</div>
+    <div class="lstep" id="ls3"><span class="ls-dot"></span>쉬운 말로 변환 중</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 오늘 판례 화면 ═══════════════════════ -->
+<div id="screen-today" class="screen">
+  <div id="cacheBar" class="cache-bar" style="display:none;">
+    <span style="flex:1;">ℹ️ 오늘 이미 불러온 판례입니다</span>
+    <button onclick="fetchCase(true)" style="background:none;border:none;color:var(--blue);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;padding:0;white-space:nowrap;">새로고침 🔄</button>
+  </div>
+  <div id="caseContent"></div>
+</div>
+
+<!-- ═══════════════════════ 지난 판례 화면 ═══════════════════════ -->
+<div id="screen-history" class="screen">
+  <div id="histDetail" style="display:none;">
+    <button class="back-btn" onclick="closeHistDetail()">← 목록으로</button>
+    <div id="histDetailContent"></div>
+  </div>
+  <div id="histList">
+    <div class="hist-count" id="histCount"></div>
+    <div class="hist-list" id="histItems"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 하단 탭 ═══════════════════════ -->
+<div class="tab-bar" id="tabBar" style="display:none;">
+  <button class="tab-item active" id="tab-today" onclick="switchTab('today')">
+    <span class="tab-item-icon">📋</span>
+    <span class="tab-item-label">오늘 판례</span>
+  </button>
+  <button class="tab-item" id="tab-history" onclick="switchTab('history')">
+    <span class="tab-item-icon">📚</span>
+    <span class="tab-item-label">지난 판례</span>
+  </button>
+</div>
+
+<!-- 토스트 -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════
+   전역 상태
+══════════════════════════════════════ */
+const now = new Date();
+const todayKey = now.toISOString().slice(0, 10);
+let API_KEY = '';
+let currentCase = null;
+let fontSizeState = 'large'; // 기본: 크게
+
+try { API_KEY = localStorage.getItem('mg_api_key') || ''; } catch(e) {}
+
+/* ── 날짜 헤더 ── */
+document.getElementById('headerDate').textContent =
+  now.toLocaleDateString('ko-KR', { month:'long', day:'numeric', weekday:'short' });
+
+/* ══════════════════════════════════════
+   글자 크기 조절
+══════════════════════════════════════ */
+const fontSizes = {
+  small: {
+    'fs-xs':'11px','fs-sm':'13px','fs-base':'15px',
+    'fs-md':'17px','fs-lg':'20px','fs-xl':'23px','fs-2xl':'27px'
+  },
+  large: {
+    'fs-xs':'13px','fs-sm':'16px','fs-base':'19px',
+    'fs-md':'22px','fs-lg':'26px','fs-xl':'30px','fs-2xl':'34px'
+  }
+};
+
+function setFontSize(size) {
+  fontSizeState = size;
+  const vars = fontSizes[size];
+  const root = document.documentElement;
+  Object.entries(vars).forEach(([k, v]) => root.style.setProperty('--' + k, v));
+  document.querySelectorAll('.font-ctrl-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.font-ctrl-btn.' + size).classList.add('active');
+  try { localStorage.setItem('mg_font', size); } catch(e) {}
+}
+
+/* 저장된 폰트 크기 복원 */
+(function() {
+  const saved = localStorage.getItem('mg_font') || 'large';
+  setFontSize(saved);
+})();
+
+/* ══════════════════════════════════════
+   화면 전환
+══════════════════════════════════════ */
+function showScreen(id) {
+  // 모든 screen 숨김
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-setup').classList.remove('active');
+  document.getElementById('screen-loading').classList.remove('active');
+
+  const tabBar = document.getElementById('tabBar');
+
+  if (id === 'setup') {
+    document.getElementById('screen-setup').classList.add('active');
+    tabBar.style.display = 'none';
+  } else if (id === 'loading') {
+    document.getElementById('screen-loading').classList.add('active');
+    tabBar.style.display = 'none';
+  } else {
+    document.getElementById('screen-' + id).classList.add('active');
+    tabBar.style.display = 'flex';
+  }
+  window.scrollTo(0, 0);
+}
+
+function switchTab(tab) {
+  showScreen(tab);
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + tab).classList.add('active');
+  if (tab === 'history') renderHistoryList();
+}
+
+/* ══════════════════════════════════════
+   API 키 시작
+══════════════════════════════════════ */
+function startWithKey() {
+  const key = document.getElementById('apiKeyInput').value.trim();
+  const errEl = document.getElementById('keyErr');
+  if (!key.startsWith('sk-ant')) {
+    errEl.style.display = 'block'; return;
+  }
+  errEl.style.display = 'none';
+  API_KEY = key;
+  try { localStorage.setItem('mg_api_key', key); } catch(e) {}
+  fetchCase(false);
+}
+
+/* ══════════════════════════════════════
+   로딩 스텝 애니메이션
+══════════════════════════════════════ */
+let stepTimer = null;
+function startStepAnim() {
+  let i = 0;
+  ['ls0','ls1','ls2','ls3'].forEach(s => { document.getElementById(s).className = 'lstep'; });
+  document.getElementById('ls0').classList.add('on');
+  if (stepTimer) clearInterval(stepTimer);
+  stepTimer = setInterval(() => {
+    if (i < 3) {
+      document.getElementById('ls'+i).className = 'lstep ok';
+      document.getElementById('ls' + (i+1)).classList.add('on');
+    }
+    i++;
+    if (i >= 4) clearInterval(stepTimer);
+  }, 3500);
+}
+
+/* ══════════════════════════════════════
+   판례 불러오기
+══════════════════════════════════════ */
+function isCacheValid(d) {
+  // 필수 필드가 모두 있고 실제 내용이 있어야 유효한 캐시
+  return d &&
+    typeof d.easy_summary === 'string' && d.easy_summary.trim().length > 10 &&
+    Array.isArray(d.summary_bullets) && d.summary_bullets.length > 0 &&
+    typeof d.title === 'string' && d.title.trim().length > 2 &&
+    typeof d.verdict === 'string' && d.verdict.trim().length > 10 &&
+    Array.isArray(d.points) && d.points.length > 0;
+}
+
+async function fetchCase(force) {
+  /* 오늘 캐시 확인 */
+  if (!force) {
+    try {
+      const c = localStorage.getItem('mg_case_' + todayKey);
+      if (c) {
+        const d = JSON.parse(c);
+        if (isCacheValid(d)) {
+          currentCase = d;
+          renderCase(d, true);
+          return;
+        } else {
+          // 깨진 캐시 삭제하고 새로 불러오기
+          localStorage.removeItem('mg_case_' + todayKey);
+        }
+      }
+    } catch(e) {
+      localStorage.removeItem('mg_case_' + todayKey);
+    }
+  }
+
+  showScreen('loading');
+  startStepAnim();
+
+  const todayStr = now.toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric', weekday:'long' });
+
+  const prompt = `당신은 새마을금고(MG) 이사장님(60대 이상 CEO)을 위한 금융·법률 판례 브리핑 전문가입니다.
+오늘 날짜: ${todayStr}
+
+【판례 선정 기준 — 반드시 준수】
+1. 대상 기관: 새마을금고(MG), 농협(농업협동조합), 우리은행, 국민은행, 신한은행, 하나은행 중 하나 이상 관련된 판례
+2. 난이도: 법학 전문가가 아닌 60대 이상 CEO도 이해할 수 있는 사례
+3. 주제 우선순위(아래 유형 중 하나를 선택):
+   - 대출·보증 관련 분쟁 (가장 흔한 사례)
+   - 직원의 횡령·배임 사건 (경영자가 반드시 알아야 할 사례)
+   - 이사장·임원의 책임 범위 (직접 관련)
+   - 고객과의 금전 분쟁 (예금, 이자, 약관)
+   - 부동산 담보·경매 관련 (실무에서 자주 발생)
+   - 금융소비자 보호 위반 (최근 증가 추세)
+4. 제외: 지나치게 전문적인 금융규제, 파생상품, M&A, 대형 기업 관련 사건
+5. 실제 존재하는 판례만 사용 (허구 금지)
+
+웹 검색 후 위 기준에 맞는 판례 1건을 찾아 아래 JSON 형식으로만 응답하세요.
+JSON 외 텍스트 없이, 마크다운 백틱 없이 순수 JSON만 반환하세요.
+
+{
+  "title": "판례 제목(사건 핵심을 담은 짧은 이름, 예: 새마을금고 직원 횡령 사건)",
+  "court": "법원명(예: 대법원)",
+  "date": "선고일(예: 2024. 8. 22.)",
+  "case_number": "사건번호(예: 대법원 2023다45678)",
+  "category": "형사 또는 민사 또는 행정",
+  "institution": "관련 기관명(예: 새마을금고, 농협, 국민은행 등)",
+  "easy_summary": "60대 이상 CEO가 단번에 이해할 수 있는 핵심 요약. 2~3문장. 법률 용어 절대 없이. 생활 속 표현으로만. 예: 우리 금고에서 이런 일이 생기면 어떻게 되나?",
+  "summary_bullets": [
+    "누가 무엇을 했는지 (한 줄, 주어+서술어)",
+    "어떤 문제가 발생했는지 (한 줄)",
+    "왜 소송까지 갔는지 (한 줄)",
+    "추가 배경이 있다면 (한 줄, 없으면 생략 가능)"
+  ],
+  "verdict": "판결 결과 2~3문장. 누가 이겼는지, 어떤 판결이 났는지. 형량·배상금이 있다면 포함.",
+  "points": [
+    "이사장님이 실무에서 바로 활용할 수 있는 구체적 행동 지침 1번",
+    "행동 지침 2번",
+    "행동 지침 3번"
+  ]
+}`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': API_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 2000,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+
+    if (stepTimer) clearInterval(stepTimer);
+
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      const msg = e.error?.message || '';
+      if (res.status === 401 || msg.includes('auth') || msg.includes('api_key')) {
+        throw new Error('AUTH_ERROR');
+      }
+      throw new Error(msg || `서버 오류 (${res.status})`);
+    }
+
+    const data = await res.json();
+    const txt = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const match = txt.match(/\{[\s\S]*\}/);
+    if (!match) throw new Error('PARSE_ERROR');
+
+    const caseData = JSON.parse(match[0]);
+    caseData._date = todayKey;
+    caseData._dateLabel = now.toLocaleDateString('ko-KR', { year:'numeric', month:'long', day:'numeric' });
+
+    // localStorage 저장 (오늘 + 전체 히스토리)
+    try { localStorage.setItem('mg_case_' + todayKey, JSON.stringify(caseData)); } catch(e) {}
+    saveHistory(caseData);
+
+    currentCase = caseData;
+    renderCase(caseData, false);
+
+  } catch (err) {
+    if (stepTimer) clearInterval(stepTimer);
+    const isAuth  = err.message === 'AUTH_ERROR';
+    const isParse = err.message === 'PARSE_ERROR';
+
+    showScreen('today');
+    document.getElementById('caseContent').innerHTML = `
+      <div class="err-card">
+        <div class="err-icon">${isAuth ? '🔑' : '😥'}</div>
+        <div class="err-title">${isAuth ? 'API 키를 확인해 주세요' : '판례를 불러오지 못했습니다'}</div>
+        <div class="err-msg">${isAuth ? 'API 키가 잘못되었거나 잔액이 부족합니다.' : (isParse ? '데이터 처리 중 오류가 발생했습니다.' : (err.message || '알 수 없는 오류'))}<br>잠시 후 다시 시도해 주세요.</div>
+        <button class="btn-retry" onclick="fetchCase(true)">🔄 다시 시도</button>
+        ${isAuth ? '<button class="btn-reset-key" onclick="resetKey()">🔑 API 키 다시 입력</button>' : ''}
+      </div>`;
+    document.getElementById('tabBar').style.display = 'flex';
+  }
+}
+
+/* ══════════════════════════════════════
+   판례 렌더링
+══════════════════════════════════════ */
+function renderCase(d, fromCache) {
+  const bulletsHTML = (d.summary_bullets || []).map(b => `
+    <div class="bullet-row">
+      <div class="bullet-arrow">▶</div>
+      <div class="bullet-text">${b}</div>
+    </div>
+  `).join('');
+
+  const pointsHTML = (d.points || []).map((p, i) => `
+    <div class="point-row">
+      <div class="point-num">${i+1}</div>
+      <div class="point-txt">${p}</div>
+    </div>
+  `).join('');
+
+  const catColor = { '형사':'red', '민사':'blue', '행정':'amber' }[d.category] || 'blue';
+  const dateLabel = d._dateLabel || now.toLocaleDateString('ko-KR', { month:'long', day:'numeric', weekday:'short' });
+
+  const html = `
+    <div class="date-badge">📅 ${dateLabel} 판례</div>
+
+    <!-- ① 오늘의 판례 (타이틀) -->
+    <div class="title-card">
+      <div class="title-label">⚖️ 오늘의 판례</div>
+      <div class="case-name">${d.title || ''}</div>
+      <div class="meta-chips">
+        <span class="chip">🏛 ${d.court || ''}</span>
+        <span class="chip">📅 ${d.date || ''}</span>
+        <span class="chip blue">${d.category || ''}</span>
+        ${d.institution ? `<span class="chip" style="background:var(--green-light);color:var(--green);">🏢 ${d.institution}</span>` : ''}
+        <span class="chip" style="font-size:12px;">📎 ${d.case_number || ''}</span>
+      </div>
+    </div>
+
+    <!-- ② 쉽게 말하면 (HOOK) -->
+    <div class="hook-card">
+      <div class="hook-kw">💬 쉽게 말하면?</div>
+      <div class="hook-body">${(d.easy_summary || '').replace(/\n/g, '<br>')}</div>
+    </div>
+
+    <!-- ③ 사건 개요 (개조식) -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon blue">📖</div>
+        <div class="card-title">사건 개요</div>
+      </div>
+      <div class="bullet-list">${bulletsHTML}</div>
+    </div>
+
+    <!-- ④ 판결 결과 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon green">⚖️</div>
+        <div class="card-title">판결 결과</div>
+      </div>
+      <div class="verdict-block">${(d.verdict || '').replace(/\n/g, '<br>')}</div>
+    </div>
+
+    <!-- ⑤ 실무 포인트 -->
+    <div class="card">
+      <div class="card-head">
+        <div class="card-icon amber">💼</div>
+        <div class="card-title">이사장님이 알아야 할 실무 포인트</div>
+      </div>
+      <div class="point-list">${pointsHTML}</div>
+    </div>
+
+    <!-- 나한테 보내기 -->
+    <div class="share-section">
+      <button class="btn-share" onclick="shareCase()">
+        <span class="btn-share-icon">💬</span>나한테 보내기
+      </button>
+      <button class="btn-refresh" onclick="fetchCase(true)">🔄 다른 판례 보기</button>
+    </div>
+  `;
+
+  document.getElementById('caseContent').innerHTML = html;
+  document.getElementById('cacheBar').style.display = fromCache ? 'flex' : 'none';
+  showScreen('today');
+}
+
+/* ══════════════════════════════════════
+   카카오톡 나한테 보내기
+══════════════════════════════════════ */
+function shareCase() {
+  if (!currentCase) return;
+  const d = currentCase;
+  const dateLabel = d._dateLabel || '';
+
+  const text = `[MG 판례 브리핑] ${dateLabel}\n\n` +
+    `⚖️ ${d.title}\n` +
+    `🏛 ${d.court} | ${d.date}\n\n` +
+    `💬 쉽게 말하면?\n${d.easy_summary}\n\n` +
+    `📖 사건 개요\n${(d.summary_bullets || []).map(b => '▶ ' + b).join('\n')}\n\n` +
+    `⚖️ 판결 결과\n${d.verdict}\n\n` +
+    `💼 실무 포인트\n${(d.points || []).map((p, i) => `${i+1}. ${p}`).join('\n')}`;
+
+  // Web Share API (모바일에서 카카오톡 공유 가능)
+  if (navigator.share) {
+    navigator.share({
+      title: `[MG 판례] ${d.title}`,
+      text: text
+    }).then(() => {
+      showToast('공유 완료! 카카오톡 나에게 보내기를 선택하세요 📩');
+    }).catch(err => {
+      if (err.name !== 'AbortError') fallbackCopy(text);
+    });
+  } else {
+    // 데스크톱 fallback: 클립보드 복사
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast('📋 내용이 복사됐습니다! 카카오톡에 붙여넣기 하세요.');
+    }).catch(() => showToast('복사 실패. 다시 시도해 주세요.'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('📋 내용이 복사됐습니다! 카카오톡에 붙여넣기 하세요.');
+  }
+}
+
+/* ══════════════════════════════════════
+   히스토리 DB
+══════════════════════════════════════ */
+function saveHistory(caseData) {
+  try {
+    let hist = [];
+    const raw = localStorage.getItem('mg_history_index');
+    if (raw) hist = JSON.parse(raw);
+    // 중복 제거 후 추가
+    hist = hist.filter(h => h.key !== caseData._date);
+    hist.unshift({ key: caseData._date, label: caseData._dateLabel, title: caseData.title, category: caseData.category });
+    if (hist.length > 60) hist = hist.slice(0, 60);
+    localStorage.setItem('mg_history_index', JSON.stringify(hist));
+  } catch(e) {}
+}
+
+function renderHistoryList() {
+  const el = document.getElementById('histItems');
+  const countEl = document.getElementById('histCount');
+  document.getElementById('histDetail').style.display = 'none';
+  document.getElementById('histList').style.display = 'block';
+
+  let hist = [];
+  try {
+    const raw = localStorage.getItem('mg_history_index');
+    if (raw) hist = JSON.parse(raw);
+  } catch(e) {}
+
+  if (hist.length === 0) {
+    el.innerHTML = `
+      <div class="hist-empty">
+        <div class="hist-empty-icon">📭</div>
+        <div class="hist-empty-msg">아직 저장된 판례가 없습니다.<br>오늘 판례를 먼저 불러오세요.</div>
+      </div>`;
+    countEl.textContent = '';
+    return;
+  }
+
+  countEl.textContent = `총 ${hist.length}건의 판례가 저장되어 있습니다`;
+  el.innerHTML = hist.map(h => `
+    <div class="hist-item" onclick="openHistDetail('${h.key}')">
+      <div class="hist-item-icon">⚖️</div>
+      <div class="hist-item-info">
+        <div class="hist-item-date">${h.label || h.key}</div>
+        <div class="hist-item-title">${h.title || '판례'}</div>
+      </div>
+      ${h.key === todayKey
+        ? '<span class="hist-today">오늘</span>'
+        : `<span class="hist-item-cat">${h.category || ''}</span>`}
+    </div>
+  `).join('');
+}
+
+function openHistDetail(key) {
+  try {
+    const raw = localStorage.getItem('mg_case_' + key);
+    if (!raw) { showToast('판례 데이터를 찾을 수 없습니다.'); return; }
+    const d = JSON.parse(raw);
+
+    const bulletsHTML = (d.summary_bullets || []).map(b => `
+      <div class="bullet-row"><div class="bullet-arrow">▶</div><div class="bullet-text">${b}</div></div>
+    `).join('');
+    const pointsHTML = (d.points || []).map((p, i) => `
+      <div class="point-row"><div class="point-num">${i+1}</div><div class="point-txt">${p}</div></div>
+    `).join('');
+
+    const html = `
+      <div class="date-badge">📅 ${d._dateLabel || key}</div>
+      <div class="title-card">
+        <div class="title-label">⚖️ 판례</div>
+        <div class="case-name">${d.title || ''}</div>
+        <div class="meta-chips">
+          <span class="chip">🏛 ${d.court || ''}</span>
+          <span class="chip">📅 ${d.date || ''}</span>
+          <span class="chip blue">${d.category || ''}</span>
+          ${d.institution ? `<span class="chip" style="background:var(--green-light);color:var(--green);">🏢 ${d.institution}</span>` : ''}
+        </div>
+      </div>
+      <div class="hook-card">
+        <div class="hook-kw">💬 쉽게 말하면?</div>
+        <div class="hook-body">${(d.easy_summary || '').replace(/\n/g, '<br>')}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon blue">📖</div><div class="card-title">사건 개요</div></div>
+        <div class="bullet-list">${bulletsHTML}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon green">⚖️</div><div class="card-title">판결 결과</div></div>
+        <div class="verdict-block">${(d.verdict || '').replace(/\n/g, '<br>')}</div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div class="card-icon amber">💼</div><div class="card-title">이사장님이 알아야 할 실무 포인트</div></div>
+        <div class="point-list">${pointsHTML}</div>
+      </div>
+      <div class="share-section">
+        <button class="btn-share" onclick="currentCase=${JSON.stringify(d).replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')};shareCase();" style="display:none;"></button>
+        <button class="btn-share" onclick="shareHistCase('${key}')">
+          <span class="btn-share-icon">💬</span>나한테 보내기
+        </button>
+      </div>
+    `;
+
+    document.getElementById('histDetailContent').innerHTML = html;
+    document.getElementById('histDetail').style.display = 'block';
+    document.getElementById('histList').style.display = 'none';
+    window.scrollTo(0, 0);
+  } catch(e) { showToast('판례를 불러오지 못했습니다.'); }
+}
+
+function shareHistCase(key) {
+  try {
+    const raw = localStorage.getItem('mg_case_' + key);
+    if (!raw) return;
+    const d = JSON.parse(raw);
+    currentCase = d;
+    shareCase();
+  } catch(e) {}
+}
+
+function closeHistDetail() {
+  document.getElementById('histDetail').style.display = 'none';
+  document.getElementById('histList').style.display = 'block';
+}
+
+/* ══════════════════════════════════════
+   기타 유틸
+══════════════════════════════════════ */
+function resetKey() {
+  try { localStorage.removeItem('mg_api_key'); } catch(e) {}
+  API_KEY = '';
+  showScreen('setup');
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ══════════════════════════════════════
+   초기 실행
+══════════════════════════════════════ */
+if (API_KEY) {
+  // 구버전 깨진 캐시 자동 감지 및 제거
+  try {
+    const old = localStorage.getItem("mg_case_" + todayKey);
+    if (old) {
+      const parsed = JSON.parse(old);
+      if (!isCacheValid(parsed)) {
+        localStorage.removeItem("mg_case_" + todayKey);
+        console.log("[MG] 구버전 캐시 감지 → 삭제 후 새로 불러옴");
+      }
+    }
+  } catch(e) { localStorage.removeItem("mg_case_" + todayKey); }
+  fetchCase(false);
+} else {
+  showScreen("setup");
+}
+</script>
+</body>
+</html>
